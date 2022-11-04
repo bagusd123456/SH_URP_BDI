@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Doozy;
+using Doozy.Runtime.UIManager.Containers;
 
 public class Z_InGameController : MonoBehaviour
 {
@@ -13,6 +15,8 @@ public class Z_InGameController : MonoBehaviour
 
     public TMP_Text gamePausedText;
     public float multiplier;
+
+    public UIContainer pausePanelDoozy;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,17 +34,23 @@ public class Z_InGameController : MonoBehaviour
             gamePausedText.alpha = Mathf.Lerp(0, 1, Mathf.PingPong(Time.unscaledTime * multiplier, 1));
             if (Input.anyKey)
             {
-                pausePanel.SetActive(false);
-                GameManager.Instance._GameState = GameManager.gameState.GAMEPLAY;
+                //pausePanel.SetActive(false);
+                //GameManager.Instance._GameState = GameManager.gameState.GAMEPLAY;
+                pausePanelDoozy.Hide();
             }
         }
+    }
+
+    public void ResumeGame()
+    {
+        GameManager.Instance._GameState = GameManager.gameState.GAMEPLAY;
     }
 
     public void PauseGame()
     {
         if (GameManager.Instance._GameState == GameManager.gameState.GAMEPLAY)
         {
-            pausePanel.SetActive(true);
+            //pausePanel.SetActive(true);
             GameManager.Instance._GameState = GameManager.gameState.IDLE;
         }
     }

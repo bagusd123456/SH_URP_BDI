@@ -8,7 +8,9 @@ public class ZombieMovement : MonoBehaviour,IPointerClickHandler
     public GameObject target;
     public float moveSpeed;
 
+    Vector3 moveDirection;
     Rigidbody2D rb;
+    public bool CanMove;
     private void Awake()
     {
         if(target == null)
@@ -26,7 +28,28 @@ public class ZombieMovement : MonoBehaviour,IPointerClickHandler
     // Update is called once per frame
     void Update()
     {
-        transform.position += Vector3.down * moveSpeed * Time.deltaTime;
+
+        if (CanMove)
+        {
+            moveDirection = Vector3.down;
+
+        }
+
+        else
+        {
+            moveDirection = Vector3.zero;
+        }
+        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+    }
+
+    public void MoveBehaviour()
+    {
+        CanMove = true;
+    }
+
+    public void StopBehaviour()
+    {
+        CanMove = false;
     }
 
     public void DestroyCurrent()
@@ -39,6 +62,7 @@ public class ZombieMovement : MonoBehaviour,IPointerClickHandler
     {
         if(gameObject.GetComponent<ZombieData>()._zombieType == ZombieData.zombieType.BASIC)
         {
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.sound);
             GameManager.Instance.score++;
             Destroy(gameObject);
         }
